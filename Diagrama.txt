@@ -1,0 +1,87 @@
+workspace "Asistente Academico Inteligente FISI" "Modelo C4 (Niveles 1, 2 y 3) - Consultas de Constancia de Practicas Pre-Profesionales" {
+model {
+alumno = person "Alumno FISI" "Estudiante de la facultad que consulta requisitos para obtener la constancia de practicas pre-profesionales."
+docsInstitucionales = softwareSystem "Documentacion Academica Institucional" "Normativa y guia oficial sobre los requisitos de constancia de practicas pre-profesionales." "External"
+asistenteFISI = softwareSystem "Asistente Academico Inteligente FISI" "Sistema PoC basado en LLM local que orienta a los alumnos sobre tramites de practicas pre-profesionales." {
+clienteWeb = container "Cliente Web (PoC)" "Interfaz de chat donde el alumno escribe su consulta y visualiza la respuesta." "HTML, CSS, JavaScript"
+backendApi = container "Backend REST - FastAPI" "Gestiona las peticiones HTTP/JSON, carga el contexto documental y orquesta la inferencia con el LLM." "Python, FastAPI" {
+apiController = component "API Controller" "Expone los endpoints REST que reciben las consultas desde el cliente web." "FastAPI Router"
+validador = component "Validador de Solicitudes" "Verifica el formato JSON, longitud y validez de la consulta del alumno." "Pydantic"
+kbLoader = component "Knowledge Base Loader" "Lee y extrae el contenido del corpus documental unico en texto plano." "Python File I/O"
+promptBuilder = component "Prompt Builder" "Construye el prompt combinando la consulta del alumno con las reglas de practicas pre-profesionales." "Python Module"
+llmOrchestrator = component "LLM Orchestrator" "Envia el prompt procesado al servidor Ollama y espera la generacion." "HTTPX / Requests"
+responseHandler = component "Response Handler" "Limpia, estructura y formatea la respuesta generada antes de devolverla al controlador." "Python Module"
+}
+baseConocimientos = container "Base de Conocimientos Unica" "Corpus documental unico en formato TXT con los requisitos para la constancia de practicas pre-profesionales." "Archivo TXT" "Database"
+ollamaServer = container "Servidor de Inferencia - Ollama" "Motor local encargado de administrar y ejecutar el modelo de lenguaje." "Ollama"
+modeloLLM = container "Modelo LLM Local" "Modelo ajustado para responder consultas academicas de la FISI." "Qwen3 4B (fisi-assistant:qwen3-4b)"
+}
+# Relaciones Nivel 1 (Contexto)
+alumno -> asistenteFISI "Realiza consultas sobre requisitos de constancia de practicas pre-profesionales"
+asistenteFISI -> alumno "Devuelve orientacion academica detallada"
+asistenteFISI -> docsInstitucionales "Usa como referencia normativa para generar el corpus"
+# Relaciones Nivel 2 (Contenedores)
+alumno -> clienteWeb "Ingresa consultas y lee respuestas" "HTTPS / HTTP"
+clienteWeb -> backendApi "Envia consulta del alumno" "HTTP / JSON"
+backendApi -> baseConocimientos "Carga contexto documental" "Lectura de archivo"
+backendApi -> ollamaServer "Envia solicitud de generacion con contexto" "HTTP / JSON"
+ollamaServer -> modeloLLM "Ejecuta inferencia con el prompt" "API Interna"
+modeloLLM -> ollamaServer "Retorna tokens generados" "API Interna"
+ollamaServer -> backendApi "Devuelve respuesta generada" "HTTP / JSON"
+backendApi -> clienteWeb "Retorna respuesta estructurada" "Respuesta JSON"
+# Relaciones Nivel 3 (Componentes)
+clienteWeb -> apiController "Envia peticion POST /chat" "HTTP / JSON"
+apiController -> validador "Envia payload para validacion"
+validador -> promptBuilder "Pasa consulta validada"
+kbLoader -> baseConocimientos "Lee requisitos de practicas pre-profesionales" "File I/O"
+kbLoader -> promptBuilder "Entrega contexto documental"
+promptBuilder -> llmOrchestrator "Envia prompt enriquecido"
+llmOrchestrator -> ollamaServer "Envia prompt para inferencia" "HTTP / JSON"
+ollamaServer -> llmOrchestrator "Devuelve texto generado por Qwen3 4B" "HTTP / JSON"
+llmOrchestrator -> responseHandler "Entrega respuesta cruda del modelo"
+responseHandler -> apiController "Devuelve objeto de respuesta formateado"
+apiController -> clienteWeb "Envia respuesta final al frontend" "Respuesta JSON"
+}
+views {
+systemContext asistenteFISI "C1_Contexto" "Diagrama de Contexto - Asistente Academico FISI" {
+include *
+autoLayout lr
+}
+container asistenteFISI "C2_Contenedores" "Diagrama de Contenedores - Arquitectura PoC Local" {
+include *
+autoLayout tb
+}
+component backendApi "C3_Componentes" "Diagrama de Componentes - Backend FastAPI" {
+include *
+autoLayout tb
+}
+styles {
+element "Person" {
+shape Person
+background #08427b
+color #ffffff
+}
+element "Software System" {
+background #1168bd
+color #ffffff
+}
+element "External" {
+background #999999
+color #ffffff
+}
+element "Container" {
+background #438dd5
+color #ffffff
+}
+element "Database" {
+shape Cylinder
+background #438dd5
+color #ffffff
+}
+element "Component" {
+background #85bbf0
+color #000000
+}
+}
+}
+}

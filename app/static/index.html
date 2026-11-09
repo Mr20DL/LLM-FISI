@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>Asistente Académico FISI</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">F</div>
+        <div>
+          <div class="brand-title">FISI <span>AI</span></div>
+          <div class="brand-subtitle">Asistente académico</div>
+        </div>
+      </div>
+      <div class="sidebar-label">ASISTENTE</div>
+      <button class="nav-item active" id="new-chat" type="button">
+        <span class="nav-icon">＋</span> Nueva conversación
+      </button>
+      <div class="sidebar-note">
+        <div class="note-icon">✦</div>
+        <strong>Demo local</strong>
+        <p>Las respuestas son generadas por un modelo ejecutado localmente.</p>
+      </div>
+      <div class="sidebar-footer">
+        <span class="status-dot"></span> Modelo local · Ollama
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div class="mobile-brand">FISI <span>AI</span></div>
+        <div class="topbar-context">
+          <span class="context-indicator"></span>
+          Asistente académico inteligente
+        </div>
+        <div class="topbar-badge">PoC v0.1</div>
+      </header>
+
+      <section class="chat-area" id="chat-area">
+        <div class="welcome" id="welcome">
+          <div class="welcome-orb">✦</div>
+          <p class="eyebrow">FACULTAD DE INGENIERÍA DE SISTEMAS E INFORMÁTICA</p>
+          <h1>¿En qué puedo<br><span>ayudarte hoy?</span></h1>
+          <p class="welcome-copy">
+            Consulta información académica documentada. El asistente utiliza
+            una base de conocimientos institucional y un modelo de lenguaje local.
+          </p>
+          <div class="suggestions">
+            <button class="suggestion" type="button" data-question="¿Qué información contiene la base de conocimientos?">
+              <span>▤</span>
+              <span><strong>Conocer la base documental</strong><small>¿Qué información está disponible?</small></span>
+              <span class="suggestion-arrow">↗</span>
+            </button>
+            <button class="suggestion" type="button" data-question="¿Cuáles son los requisitos de prácticas preprofesionales?">
+              <span>⌁</span>
+              <span><strong>Prácticas preprofesionales</strong><small>Consultar requisitos documentados</small></span>
+              <span class="suggestion-arrow">↗</span>
+            </button>
+            <button class="suggestion" type="button" data-question="¿Qué trámites académicos se describen en el documento?">
+              <span>◎</span>
+              <span><strong>Trámites académicos</strong><small>Buscar información en el documento</small></span>
+              <span class="suggestion-arrow">↗</span>
+            </button>
+          </div>
+        </div>
+        <div class="messages" id="messages" aria-live="polite"></div>
+      </section>
+
+      <footer class="composer-wrap">
+        <form class="composer" id="query-form">
+          <textarea id="question" rows="1" maxlength="1500"
+            placeholder="Escribe tu pregunta sobre la FISI..." aria-label="Pregunta"
+            required></textarea>
+          <button class="send-button" id="send-button" type="submit" aria-label="Enviar pregunta">
+            <span>↑</span>
+          </button>
+        </form>
+        <div class="composer-caption">
+          <span>Modelo local · Qwen3 4B</span>
+          <span>Verifica siempre la información institucional oficial.</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
