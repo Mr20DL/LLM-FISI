@@ -8,6 +8,23 @@ const newChatButton = document.getElementById("new-chat");
 
 let isBusy = false;
 
+function escapeHtml(value) {
+  return value.replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[char]);
+}
+
+function renderMarkdown(text) {
+  if (typeof marked === "undefined") return escapeHtml(text);
+  const html = marked.parse(text, { gfm: true, breaks: true });
+  // Sanitize the rendered HTML to keep the assistant response safe.
+  return typeof DOMPurify !== "undefined" ? DOMPurify.sanitize(html) : html;
+}
+
 function addMessage(role, text, meta = "") {
   const row = document.createElement("div");
   row.className = `message ${role}`;
@@ -18,8 +35,13 @@ function addMessage(role, text, meta = "") {
 
   const content = document.createElement("div");
   content.className = "bubble";
-  // textContent prevents model output from being interpreted as HTML.
-  content.textContent = text;
+  if (role === "assistant") {
+    // Only the assistant response is rendered as Markdown.
+    content.innerHTML = renderMarkdown(text);
+  } else {
+    // User input stays as plain text to avoid XSS.
+    content.textContent = text;
+  }
 
   if (meta) {
     const metadata = document.createElement("div");
@@ -52,7 +74,10 @@ async function submitQuestion(question) {
 
   const typing = document.createElement("div");
   typing.className = "typing";
-  typing.textContent = "El asistente está preparando una respuesta…";
+  typing.setAttribute("role", "status");
+  typing.setAttribute("aria-label", "El asistente está preparando una respuesta");
+  typing.innerHTML =
+    '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
   messages.appendChild(typing);
   chatArea.scrollTop = chatArea.scrollHeight;
 

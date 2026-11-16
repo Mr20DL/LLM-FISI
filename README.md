@@ -6,11 +6,11 @@ Prueba de Concepto (PoC) desarrollada para la **Tarea 5** de la asignatura. El s
 
 ## 🚀 Características Principales
 
-* **Inferencia Local y Privada:** Integración con **Ollama** utilizando el modelo cuantizado `Qwen 2.5 / Qwen 3 4B`.
-* **Zero-RAG Context Injection:** Carga en memoria del corpus institucional (`base_conocimiento_fisi.txt`) inyectado directamente en el prompt del sistema.
-* **Backend Asíncrono:** Desarrollado con **FastAPI** y validación de esquemas con **Pydantic**.
-* **Interfaz Web Moderna:** Chat responsive en **HTML5, CSS3 (Custom Properties) y JavaScript ES6+**.
-* **Suite de Pruebas:** Cobertura de endpoints REST con **Pytest** y `TestClient`.
+- **Inferencia Local y Privada:** Integración con **Ollama** utilizando el modelo cuantizado `Qwen 3 4B`.
+- **Zero-RAG Context Injection:** Carga en memoria del corpus institucional (`base_conocimiento_fisi.txt`) inyectado directamente en el prompt del sistema.
+- **Backend Asíncrono:** Desarrollado con **FastAPI** y validación de esquemas con **Pydantic**.
+- **Interfaz Web Moderna:** Chat responsive en **HTML5, CSS3 (Custom Properties) y JavaScript ES6+**.
+- **Suite de Pruebas:** Cobertura de endpoints REST con **Pytest** y `TestClient`.
 
 ---
 
@@ -27,14 +27,14 @@ El flujo de comunicación de la aplicación sigue la siguiente estructura:
 
 ## 🛠️ Tecnologías Utilizadas
 
-| Componente | Tecnología |
-| :--- | :--- |
-| **Lenguaje Backend** | Python 3.12+ |
-| **Framework Web** | FastAPI + Uvicorn |
-| **Orquestador LLM** | Ollama Python SDK |
-| **Modelo LLM** | Qwen (4B / 7B) |
-| **Frontend** | Vanilla HTML5 / CSS3 / JavaScript |
-| **Testing** | Pytest + HTTPX |
+| Componente           | Tecnología                        |
+| :------------------- | :-------------------------------- |
+| **Lenguaje Backend** | Python 3.12+                      |
+| **Framework Web**    | FastAPI + Uvicorn                 |
+| **Orquestador LLM**  | Ollama Python SDK                 |
+| **Modelo LLM**       | Qwen (4B / 7B)                    |
+| **Frontend**         | Vanilla HTML5 / CSS3 / JavaScript |
+| **Testing**          | Pytest + HTTPX                    |
 
 ---
 
@@ -58,29 +58,33 @@ ollama run fisi-assistant:qwen3-4b
 ## ⚡ Instalación y Ejecución Local
 
 1. **Clonar el repositorio:**
+
    ```bash
    git clone <URL_DE_TU_REPOSITORIO>
    cd LLM-FISI
    ```
 
 2. **Crear y activar entorno virtual:**
-   * En Linux/macOS:
+
+   - En Linux/macOS:
      ```bash
      python3 -m venv venv
      source venv/bin/activate
      ```
-   * En Windows (PowerShell):
+   - En Windows (PowerShell):
      ```powershell
      python -m venv venv
      .\venv\Scripts\Activate.ps1
      ```
 
 3. **Instalar dependencias:**
+
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Iniciar el servidor backend (FastAPI):**
+
    ```bash
    uvicorn app.main:app --reload --port 8000
    ```
@@ -127,7 +131,7 @@ LLM-FISI/
 
 ## 👥 Integrantes - Grupo 2
 
-* Chochoca Yarleque Bruno Omar
-* Ever Avendaño
-* Carlos Montenegro
-* Chaco Flores Jose
+- Chochoca Yarleque Bruno Omar
+- Ever Avendaño
+- Carlos Montenegro
+- Chaco Flores Jose
